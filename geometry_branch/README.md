@@ -2,6 +2,8 @@
 
 This directory contains the main code for the geometry branch, namely the SNN-based monocular SfM / VO front-end.
 
+The geometry branch studies a deployment-aware front-end setting in which RGB video is converted into temporal spike representations for depth-oriented visual encoding, while relative pose estimation is handled through a practical hybrid design. The goal is to analyze geometry quality together with sparsity and runtime behavior under different operating settings.
+
 ## Files
 
 - `models.py`: geometry front-end model definitions.
@@ -77,5 +79,7 @@ python run_lif_spike_mainline.py \
 ## Remarks
 
 - The geometry branch currently targets front-end geometric perception rather than a complete SLAM system.
+- The framework follows a hybrid depth-pose design instead of a fully spiking joint architecture.
 - Sparse execution, temporal encoding, and pose-consistency regularization are all exposed through command-line options.
+- Time-step settings should be understood as different operating points, not as a single monotonic performance knob.
 - For public release, only the main branch code has been kept here; reviewer-specific scripts and local experiment wrappers are intentionally excluded.

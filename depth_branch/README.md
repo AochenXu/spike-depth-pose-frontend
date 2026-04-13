@@ -1,6 +1,8 @@
 # Depth Branch
 
-This directory contains the main code for the depth branch.
+This directory contains the main code for the depth perception branch of the project.
+
+The depth branch focuses on the question of how spike-based visual encoding can be used for monocular depth estimation while preserving a practical training path through ANN pretraining and SNN fine-tuning.
 
 ## Files
 
@@ -69,4 +71,5 @@ Training produces:
 ## Remarks
 
 - The SNN depth branch is designed to start from ANN encoder initialization.
-- The current public release keeps the main training path used in our project, while leaving room for future cleanup and modularization.
+- The released pipeline reflects the practical training path used in our study: first obtain a stable ANN depth model, then transfer it to the SNN branch.
+- This branch is meant to expose the main code path used for depth learning rather than every intermediate experimental variant explored during development.
