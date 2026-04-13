@@ -25,7 +25,7 @@ Example:
 ...
 ```
 
-You can adapt [make_kitti_selection_lists.py](/home/larl/snn/snn_depth_geometry_release/depth_branch/make_kitti_selection_lists.py) to generate such lists from KITTI depth data.
+You can adapt [make_kitti_selection_lists.py](../depth_branch/make_kitti_selection_lists.py) to generate such lists from KITTI depth data.
 
 ## 2. Geometry Branch Data
 
@@ -42,7 +42,7 @@ The geometry branch expects the KITTI odometry dataset root in the following sty
 
 The code reads triplets `(t-1, t, t+1)` directly from KITTI odometry sequences.
 
-Use [make_kitti_sfm_triplets.py](/home/larl/snn/snn_depth_geometry_release/geometry_branch/make_kitti_sfm_triplets.py) if you want to export explicit triplet lists.
+Use [make_kitti_sfm_triplets.py](../geometry_branch/make_kitti_sfm_triplets.py) if you want to export explicit triplet lists.
 
 ## Camera Intrinsics
 

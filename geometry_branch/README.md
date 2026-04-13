@@ -4,6 +4,8 @@ This directory contains the main code for the geometry branch, namely the SNN-ba
 
 The geometry branch studies a deployment-aware front-end setting in which RGB video is converted into temporal spike representations for depth-oriented visual encoding, while relative pose estimation is handled through a practical hybrid design. The goal is to analyze geometry quality together with sparsity and runtime behavior under different operating settings.
 
+For clarity, the released geometry front-end uses a lightweight single-scale depth decoder for the SfM pipeline, while the Monodepth2-style skip decoder is kept in the separate `depth_branch/`.
+
 ## Files
 
 - `models.py`: geometry front-end model definitions.
@@ -22,7 +24,7 @@ The geometry branch studies a deployment-aware front-end setting in which RGB vi
 
 The geometry branch is designed for KITTI odometry sequences.
 
-See [DATA_PREPARATION.md](/home/larl/snn/snn_depth_geometry_release/docs/DATA_PREPARATION.md).
+See [DATA_PREPARATION.md](../docs/DATA_PREPARATION.md).
 
 ## Main Training Command
 
@@ -56,7 +58,7 @@ python train_snn_sfm_kitti.py \
 python eval_snn_vo_ate.py \
   --kitti-root /path/to/kitti_dataset/dataset \
   --seq-id 09 \
-  --ckpt /path/to/best_snn_sfm.pth
+  --ckpt-path /path/to/best_snn_sfm.pth
 ```
 
 ## Evaluate Geometry Backend
@@ -65,7 +67,7 @@ python eval_snn_vo_ate.py \
 python eval_snn_geometry_backend.py \
   --kitti-root /path/to/kitti_dataset/dataset \
   --seq-id 09 \
-  --ckpt /path/to/best_snn_sfm.pth
+  --ckpt-path /path/to/best_snn_sfm.pth
 ```
 
 ## Run Mainline Convenience Script
@@ -80,6 +82,7 @@ python run_lif_spike_mainline.py \
 
 - The geometry branch currently targets front-end geometric perception rather than a complete SLAM system.
 - The framework follows a hybrid depth-pose design instead of a fully spiking joint architecture.
+- The main public release focuses on the core train/eval pipeline; perturbation wrappers for reviewer-specific robustness tables and external hardware power instrumentation are not bundled here.
 - Sparse execution, temporal encoding, and pose-consistency regularization are all exposed through command-line options.
 - Time-step settings should be understood as different operating points, not as a single monotonic performance knob.
 - For public release, only the main branch code has been kept here; reviewer-specific scripts and local experiment wrappers are intentionally excluded.

@@ -1,6 +1,7 @@
 import argparse
 import os
 from collections import Counter
+from pathlib import Path
 from typing import Dict, Tuple
 
 import torch
@@ -579,12 +580,13 @@ def train_snn_sfm(args):
 
 
 def parse_args():
+    script_dir = Path(__file__).resolve().parent
     parser = argparse.ArgumentParser(description="Train SNN SfM/VO front-end on KITTI odometry sequences.")
-    parser.add_argument("--kitti-root", default="/home/larl/kitti_dataset/dataset")
-    parser.add_argument("--ann-encoder-ckpt", default="/home/larl/snn/monodepth_snn/outputs/ann_depth/best_ann_encoder.pth")
-    parser.add_argument("--snn-depth-ckpt", default="/home/larl/snn/monodepth_snn/outputs/snn_depth/best_snn_depth_model.pth")
+    parser.add_argument("--kitti-root", default="")
+    parser.add_argument("--ann-encoder-ckpt", default="")
+    parser.add_argument("--snn-depth-ckpt", default="")
     parser.add_argument("--resume-snn-sfm-ckpt", default="")
-    parser.add_argument("--output-dir", default="/home/larl/snn/monodepth_snn_sparse_exec/outputs/snn_sfm")
+    parser.add_argument("--output-dir", default=str(script_dir / "outputs" / "snn_sfm"))
     parser.add_argument("--auto-experiment-dir", action="store_true")
     parser.add_argument("--train-seqs", default="00,01,02,03,04,05,06,07,08")
     parser.add_argument("--val-seqs", default="09")
@@ -604,7 +606,7 @@ def parse_args():
     parser.add_argument("--tau", type=float, default=2.0)
     parser.add_argument("--time-steps", type=int, default=4)
     parser.add_argument("--v-threshold", type=float, default=0.35)
-    parser.add_argument("--input-encoding", choices=["rate", "analog", "latency", "delta_latency", "delta_latency_anchor"], default="delta_latency_anchor")
+    parser.add_argument("--input-encoding", choices=["rate", "analog", "latency", "delta_latency", "delta_latency_anchor"], default="delta_latency")
     parser.add_argument("--lif-output-mode", choices=["mixed", "spike", "membrane"], default="mixed")
     parser.add_argument("--train-sampling", choices=["uniform", "seq_balanced"], default="seq_balanced")
     parser.add_argument("--sparse-exec", action="store_true")

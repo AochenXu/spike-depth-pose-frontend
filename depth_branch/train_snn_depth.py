@@ -1,5 +1,6 @@
 import argparse
 import os
+from pathlib import Path
 from typing import Dict, Tuple
 
 import torch
@@ -352,12 +353,13 @@ def train_snn_depth(args):
 
 
 def parse_args():
+    script_dir = Path(__file__).resolve().parent
     parser = argparse.ArgumentParser(description="Fine-tune SNN depth model from ANN encoder initialization.")
-    parser.add_argument("--image-list-file", default="/home/larl/snn/dataset/kitti_train_images.txt")
-    parser.add_argument("--depth-list-file", default="/home/larl/snn/dataset/kitti_train_depths.txt")
-    parser.add_argument("--ann-encoder-ckpt", default="/home/larl/snn/monodepth_snn/outputs/ann_depth/best_ann_encoder.pth")
+    parser.add_argument("--image-list-file", default="")
+    parser.add_argument("--depth-list-file", default="")
+    parser.add_argument("--ann-encoder-ckpt", default="")
     parser.add_argument("--resume-snn-ckpt", default="")
-    parser.add_argument("--output-dir", default="/home/larl/snn/monodepth_snn/outputs/snn_depth")
+    parser.add_argument("--output-dir", default=str(script_dir / "outputs" / "snn_depth"))
     parser.add_argument("--auto-experiment-dir", action="store_true")
     parser.add_argument("--batch-size", type=int, default=4)
     parser.add_argument("--eval-batch-size", type=int, default=4)

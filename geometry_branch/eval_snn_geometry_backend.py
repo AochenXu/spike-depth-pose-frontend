@@ -1,6 +1,7 @@
 import argparse
 import os
 from pathlib import Path
+from pathlib import Path
 
 import numpy as np
 import torch
@@ -167,11 +168,12 @@ def main(args):
 
 
 def parse_args():
+    script_dir = Path(__file__).resolve().parent
     parser = argparse.ArgumentParser(description="Evaluate local geometry fusion consistency for the SNN front-end.")
-    parser.add_argument("--kitti-root", default="/home/larl/kitti_dataset/dataset")
+    parser.add_argument("--kitti-root", default="")
     parser.add_argument("--experiment-dir", default="")
-    parser.add_argument("--ckpt-path", default="/home/larl/snn/monodepth_snn/outputs/snn_sfm/best_snn_sfm.pth")
-    parser.add_argument("--output-dir", default="/home/larl/snn/monodepth_snn/outputs/geometry_backend")
+    parser.add_argument("--ckpt-path", default="")
+    parser.add_argument("--output-dir", default=str(script_dir / "outputs" / "geometry_backend"))
     parser.add_argument("--auto-output-dir", action="store_true")
     parser.add_argument("--seq-id", default="09")
     parser.add_argument("--max-frames", type=int, default=50)

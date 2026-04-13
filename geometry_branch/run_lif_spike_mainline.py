@@ -5,7 +5,7 @@ import sys
 from pathlib import Path
 
 
-ROOT = Path("/home/larl/snn/monodepth_snn_sparse_exec")
+ROOT = Path(__file__).resolve().parent
 TRAIN_SCRIPT = ROOT / "train_snn_sfm_kitti.py"
 VO_SCRIPT = ROOT / "eval_snn_vo_ate.py"
 BENCH_SCRIPT = ROOT / "benchmark_snn_frontends.py"
@@ -222,8 +222,9 @@ def main(args):
 
 
 def parse_args():
+    script_dir = Path(__file__).resolve().parent
     parser = argparse.ArgumentParser(description="Run the current lif-spike sparse mainline with a custom train/val split.")
-    parser.add_argument("--output-dir", default="/home/larl/snn/monodepth_snn_sparse_exec/outputs/lif_spike_split_check")
+    parser.add_argument("--output-dir", default=str(script_dir / "outputs" / "lif_spike_split_check"))
     parser.add_argument("--train-seqs", default="00,03,04,06")
     parser.add_argument("--val-seqs", default="08")
     parser.add_argument("--eval-seq", default="")
@@ -260,10 +261,10 @@ def parse_args():
     parser.add_argument("--hybrid-pose-diff", action="store_true")
     parser.add_argument("--freeze-depth-epochs", type=int, default=1)
     parser.add_argument("--lambda-pose-consistency", type=float, default=0.05)
-    parser.add_argument("--ann-encoder-ckpt", default="/home/larl/snn/monodepth_snn/outputs/ann_depth/best_ann_encoder.pth")
-    parser.add_argument("--snn-depth-ckpt", default="/home/larl/snn/monodepth_snn/outputs/snn_depth/best_snn_depth_model.pth")
-    parser.add_argument("--old-model-py", default="/home/larl/snn/monodepth_snn/models.py")
-    parser.add_argument("--old-ckpt", default="/home/larl/snn/monodepth_snn/outputs/snn_sfm/snn_sfm_train03-04-06_val09_T1_thr0.35_tau2_depthinit/best_snn_sfm.pth")
+    parser.add_argument("--ann-encoder-ckpt", default="")
+    parser.add_argument("--snn-depth-ckpt", default="")
+    parser.add_argument("--old-model-py", default="")
+    parser.add_argument("--old-ckpt", default="")
     parser.add_argument("--old-time-steps", type=int, default=1)
     parser.add_argument("--max-frames", type=int, default=0)
     parser.add_argument("--max-pairs", type=int, default=100)

@@ -1,5 +1,6 @@
 import argparse
 import os
+from pathlib import Path
 from typing import Dict, Tuple
 
 import torch
@@ -243,10 +244,11 @@ def train_ann_depth(args):
 
 
 def parse_args():
+    script_dir = Path(__file__).resolve().parent
     parser = argparse.ArgumentParser(description="Train ANN depth model with the current depth decoder.")
-    parser.add_argument("--image-list-file", default="/home/larl/snn/dataset/kitti_train_images.txt")
-    parser.add_argument("--depth-list-file", default="/home/larl/snn/dataset/kitti_train_depths.txt")
-    parser.add_argument("--output-dir", default="/home/larl/snn/monodepth_snn/outputs/ann_depth_retrained")
+    parser.add_argument("--image-list-file", default="")
+    parser.add_argument("--depth-list-file", default="")
+    parser.add_argument("--output-dir", default=str(script_dir / "outputs" / "ann_depth"))
     parser.add_argument("--auto-experiment-dir", action="store_true")
     parser.add_argument("--resume-ann-ckpt", default="")
     parser.add_argument("--batch-size", type=int, default=4)

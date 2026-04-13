@@ -79,15 +79,15 @@ pip install -r requirements.txt
 
 ### 1. Prepare datasets
 
-See [DATA_PREPARATION.md](/home/larl/snn/snn_depth_geometry_release/docs/DATA_PREPARATION.md).
+See [DATA_PREPARATION.md](docs/DATA_PREPARATION.md).
 
 ### 2. Depth branch
 
-See [depth_branch/README.md](/home/larl/snn/snn_depth_geometry_release/depth_branch/README.md).
+See [depth_branch/README.md](depth_branch/README.md).
 
 ### 3. Geometry branch
 
-See [geometry_branch/README.md](/home/larl/snn/snn_depth_geometry_release/geometry_branch/README.md).
+See [geometry_branch/README.md](geometry_branch/README.md).
 
 ## Notes
 
@@ -104,6 +104,8 @@ See [geometry_branch/README.md](/home/larl/snn/snn_depth_geometry_release/geomet
 - `geometry_branch/eval_snn_vo_ate.py`: VO trajectory and ATE evaluation.
 - `geometry_branch/eval_snn_geometry_backend.py`: backend-oriented geometric consistency evaluation.
 - `geometry_branch/benchmark_snn_frontends.py`: deployment-oriented latency and memory benchmarking.
+
+The depth and geometry branches intentionally use different depth heads in this release: `depth_branch/` keeps a Monodepth2-style skip decoder for depth-focused experiments, while `geometry_branch/` uses a lighter single-scale decoder for the front-end SfM pipeline.
 
 ## Reproducibility Scope
 

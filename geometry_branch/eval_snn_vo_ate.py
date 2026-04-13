@@ -110,6 +110,10 @@ def resolve_ckpt_path(args) -> str:
 def main(args):
     device = torch.device(args.device if args.device else ("cuda" if torch.cuda.is_available() else "cpu"))
     ckpt_path = resolve_ckpt_path(args)
+    if not ckpt_path:
+        raise ValueError("Please provide --ckpt-path or --experiment-dir.")
+    if not args.kitti_root:
+        raise ValueError("Please provide --kitti-root.")
     ckpt = torch.load(ckpt_path, map_location="cpu")
     config = ckpt.get("config", {})
     model = MonoDepthSNN_Spike(
@@ -208,12 +212,13 @@ def main(args):
 
 
 def parse_args():
+    script_dir = Path(__file__).resolve().parent
     parser = argparse.ArgumentParser(description="Evaluate SNN SfM front-end with scale-aligned VO/ATE on KITTI poses.")
-    parser.add_argument("--kitti-root", default="/home/larl/kitti_dataset/dataset")
+    parser.add_argument("--kitti-root", default="")
     parser.add_argument("--seq-id", default="09")
-    parser.add_argument("--ckpt-path", default="/home/larl/snn/monodepth_snn_sparse_exec/outputs/snn_sfm/best_snn_sfm.pth")
+    parser.add_argument("--ckpt-path", default="")
     parser.add_argument("--experiment-dir", default="")
-    parser.add_argument("--output-dir", default="/home/larl/snn/monodepth_snn_sparse_exec/outputs/vo_eval")
+    parser.add_argument("--output-dir", default=str(script_dir / "outputs" / "vo_eval"))
     parser.add_argument("--max-frames", type=int, default=0)
     parser.add_argument("--height", type=int, default=256)
     parser.add_argument("--width", type=int, default=832)

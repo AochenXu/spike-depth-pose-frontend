@@ -21,7 +21,7 @@ Typical usage is based on KITTI depth data:
 - RGB image list file
 - depth map list file
 
-See [DATA_PREPARATION.md](/home/larl/snn/snn_depth_geometry_release/docs/DATA_PREPARATION.md).
+See [DATA_PREPARATION.md](../docs/DATA_PREPARATION.md).
 
 ## Training an ANN depth model
 

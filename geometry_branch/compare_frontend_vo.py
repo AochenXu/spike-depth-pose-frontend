@@ -217,26 +217,33 @@ def build_row(label: str, ckpt: str, config: Dict[str, Any], vo_metrics: Dict[st
 
 
 def parse_args():
+    script_dir = Path(__file__).resolve().parent
     parser = argparse.ArgumentParser(description="Compare ANN and SNN front-ends under the same VO pipeline.")
-    parser.add_argument("--kitti-root", default="/home/larl/kitti_dataset/dataset")
+    parser.add_argument("--kitti-root", default="")
     parser.add_argument("--seq-id", default="09")
     parser.add_argument("--max-frames", type=int, default=100)
     parser.add_argument("--max-pairs", type=int, default=100)
     parser.add_argument("--height", type=int, default=256)
     parser.add_argument("--width", type=int, default=832)
-    parser.add_argument("--ann-model-py", default="/home/larl/snn/monodepth_snn/models.py")
-    parser.add_argument("--ann-ckpt", default="/home/larl/snn/monodepth_snn/outputs/snn_sfm/snn_sfm_train03-04-06_val09_T1_thr0.35_tau2_depthinit/best_snn_sfm.pth")
-    parser.add_argument("--snn-model-py", default="/home/larl/snn/monodepth_snn_sparse_exec/models.py")
-    parser.add_argument("--snn-ckpt", default="/home/larl/snn/monodepth_snn_sparse_exec/outputs/reviewer_30ep_resume_rebuilt/snn_sfm_train03-04-06_val09_T4_thr0.35_tau2_delta_latency_lifspike_sparse_slconv1-conv2_aw0.2_ds1_md0.5-80_fd0r0.9_ph256m128_pn1_cr0m0.05_es0m0.05_hs0w0.5_hp0_seq_balanced_pc0.05_fz2_pairpose_depthinit/best_snn_sfm.pth")
+    parser.add_argument("--ann-model-py", default="")
+    parser.add_argument("--ann-ckpt", default="")
+    parser.add_argument("--snn-model-py", default=str(script_dir / "models.py"))
+    parser.add_argument("--snn-ckpt", default="")
     parser.add_argument("--ann-label", default="ANN front-end")
     parser.add_argument("--snn-label", default="SNN front-end")
-    parser.add_argument("--output-dir", default="/home/larl/snn/monodepth_snn_sparse_exec/outputs/frontend_vo_compare")
+    parser.add_argument("--output-dir", default=str(script_dir / "outputs" / "frontend_vo_compare"))
     parser.add_argument("--device", default="")
     return parser.parse_args()
 
 
 def main(args):
     device = torch.device(args.device if args.device else ("cuda" if torch.cuda.is_available() else "cpu"))
+    if not args.kitti_root:
+        raise ValueError("Please provide --kitti-root.")
+    if not args.ann_model_py or not args.ann_ckpt:
+        raise ValueError("Please provide both --ann-model-py and --ann-ckpt.")
+    if not args.snn_model_py or not args.snn_ckpt:
+        raise ValueError("Please provide both --snn-model-py and --snn-ckpt.")
     ensure_dir(args.output_dir)
 
     dataset = KITTIOdometryTriplet(

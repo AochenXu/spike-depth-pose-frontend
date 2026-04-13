@@ -5,6 +5,7 @@ import inspect
 import json
 import os
 import time
+from pathlib import Path
 from typing import Any, Dict, Tuple
 
 import numpy as np
@@ -179,6 +180,12 @@ def save_table(path: str, rows: Tuple[Dict[str, Any], ...]) -> None:
 
 def main(args):
     device = torch.device(args.device if args.device else ("cuda" if torch.cuda.is_available() else "cpu"))
+    if not args.kitti_root:
+        raise ValueError("Please provide --kitti-root.")
+    if not args.old_model_py or not args.old_ckpt:
+        raise ValueError("Please provide both --old-model-py and --old-ckpt.")
+    if not args.new_model_py or not args.new_ckpt:
+        raise ValueError("Please provide both --new-model-py and --new-ckpt.")
     dataset = KITTIOdometryTriplet(
         kitti_root=args.kitti_root,
         seqs=[args.seq_id],
@@ -231,19 +238,20 @@ def main(args):
 
 
 def parse_args():
+    script_dir = Path(__file__).resolve().parent
     parser = argparse.ArgumentParser(description="Benchmark dense and sparse SNN front-ends on KITTI odometry pairs.")
-    parser.add_argument("--kitti-root", default="/home/larl/kitti_dataset/dataset")
+    parser.add_argument("--kitti-root", default="")
     parser.add_argument("--seq-id", default="09")
     parser.add_argument("--max-pairs", type=int, default=100)
     parser.add_argument("--height", type=int, default=256)
     parser.add_argument("--width", type=int, default=832)
-    parser.add_argument("--old-model-py", default="/home/larl/snn/monodepth_snn/models.py")
-    parser.add_argument("--old-ckpt", default="/home/larl/snn/monodepth_snn/outputs/snn_sfm/snn_sfm_train03-04-06_val09_T1_thr0.35_tau2_depthinit/best_snn_sfm.pth")
+    parser.add_argument("--old-model-py", default="")
+    parser.add_argument("--old-ckpt", default="")
     parser.add_argument("--old-time-steps", type=int, default=1)
-    parser.add_argument("--new-model-py", default="/home/larl/snn/monodepth_snn_sparse_exec/models.py")
-    parser.add_argument("--new-ckpt", default="/home/larl/snn/monodepth_snn_sparse_exec/outputs/snn_sfm/snn_sfm_train03-04-06_val09_T4_thr0.35_tau2_delta_latency_sparse_seq_balanced_pc0.05_fz0_pairpose_depthinit/best_snn_sfm.pth")
+    parser.add_argument("--new-model-py", default=str(script_dir / "models.py"))
+    parser.add_argument("--new-ckpt", default="")
     parser.add_argument("--new-time-steps", type=int, default=4)
-    parser.add_argument("--output-dir", default="/home/larl/snn/monodepth_snn_sparse_exec/outputs/benchmark")
+    parser.add_argument("--output-dir", default=str(script_dir / "outputs" / "benchmark"))
     parser.add_argument("--device", default="")
     return parser.parse_args()
 

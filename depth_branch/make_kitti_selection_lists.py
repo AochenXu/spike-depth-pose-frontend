@@ -2,7 +2,7 @@ import os
 from glob import glob
 
 def make_lists(
-    root="/home/larl/snn/dataset/data_depth_selection/depth_selection/val_selection_cropped",
+    root="",
     out_img_list="kitti_train_images.txt",
     out_depth_list="kitti_train_depths.txt",
 ):

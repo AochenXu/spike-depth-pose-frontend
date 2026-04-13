@@ -30,9 +30,9 @@ def make_triplets(kitti_root: str, seqs, out_triplet_path: str):
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Generate strict KITTI odometry triplets from image_2 sequences.")
-    parser.add_argument("--kitti-root", default="/home/larl/kitti_dataset/dataset")
+    parser.add_argument("--kitti-root", default="")
     parser.add_argument("--seqs", default="00,01,02,03,04,05,06,07,08,09,10")
-    parser.add_argument("--out-triplet-path", default="/home/larl/snn/monodepth_snn/kitti_sfm_triplets.txt")
+    parser.add_argument("--out-triplet-path", default="kitti_sfm_triplets.txt")
     return parser.parse_args()
 
 
