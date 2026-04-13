@@ -1,6 +1,10 @@
-# RGB Spatiotemporal Spike Encoding for Depth and Geometry Perception
+# RGB Spatiotemporal Spike Encoding and Hybrid Depth-Pose Perception toward Resource-Aware Visual Front-Ends
 
-This repository contains the main implementation of our RGB spatiotemporal spike encoding framework for deployment-aware visual front-ends. The project studies how conventional RGB video can be converted into spike-based temporal representations and then used for monocular depth perception and geometry-aware front-end modeling.
+This repository contains the main implementation of our paper on RGB spatiotemporal spike encoding and hybrid depth-pose perception for resource-aware visual front-ends. The project studies how conventional RGB video can be converted into spike-based temporal representations and then used for monocular depth perception and geometry-aware front-end modeling.
+
+![Framework Overview](docs/assets/framework_overview.png)
+
+We focus on a practical visual front-end design that combines RGB-to-spike temporal encoding, an SNN-based depth branch, and a hybrid pose pathway, together with sparse execution analysis for studying the trade-off among geometry quality, spike sparsity, and runtime cost.
 
 The released code is organized into two complementary branches:
 
