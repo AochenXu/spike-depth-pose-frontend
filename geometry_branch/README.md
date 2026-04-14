@@ -59,7 +59,6 @@ python train_snn_sfm_kitti.py \
 python eval_snn_vo_ate.py \
   --kitti-root /path/to/kitti_dataset/dataset \
   --seq-id 09 \
-  --protocol windowed \
   --max-frames 200 \
   --window-size 100 \
   --window-stride 50 \
@@ -69,21 +68,11 @@ python eval_snn_vo_ate.py \
 
 Recommended paper-style protocol:
 
-- `windowed` evaluation for local front-end geometry quality.
+- local-window evaluation for front-end geometry quality.
 - `max_frames = 200`
 - `window_size = 100`
 - `window_stride = 50`
 - `max_windows = 4`
-
-If you need the older long-trajectory accumulation setting, use:
-
-```bash
-python eval_snn_vo_ate.py \
-  --kitti-root /path/to/kitti_dataset/dataset \
-  --seq-id 09 \
-  --protocol full_trajectory \
-  --ckpt-path /path/to/best_snn_sfm.pth
-```
 
 ## Plot Frame-Trajectory Comparison
 
@@ -126,7 +115,7 @@ python run_lif_spike_mainline.py \
 - The framework follows a hybrid depth-pose design instead of a fully spiking joint architecture.
 - The main public release focuses on the core train/eval pipeline; perturbation wrappers for reviewer-specific robustness tables and external hardware power instrumentation are not bundled here.
 - Besides scalar ATE-style metrics, the repository now includes a frame-trajectory comparison figure for qualitative and short-window geometric analysis.
-- The recommended default ATE setting in this release is the `windowed` protocol rather than full-sequence accumulation.
+- The released ATE evaluation is intentionally kept in the local-window setting used by the paper-facing experiments.
 - Sparse execution, temporal encoding, and pose-consistency regularization are all exposed through command-line options.
 - Time-step settings should be understood as different operating points, not as a single monotonic performance knob.
 - For public release, only the main branch code has been kept here; reviewer-specific scripts and local experiment wrappers are intentionally excluded.

@@ -190,36 +190,6 @@ def evaluate_window(
     }
 
 
-def evaluate_full_trajectory(
-    model: MonoDepthSNN_Spike,
-    config: Dict[str, object],
-    image_paths: Sequence[Path],
-    gt_poses: np.ndarray,
-    device: torch.device,
-    resize_hw: Tuple[int, int],
-) -> Dict[str, object]:
-    window_eval = evaluate_window(model, config, image_paths, device, resize_hw)
-    pred_poses = window_eval["pred_poses"]
-    gt_eval = gt_poses[: pred_poses.shape[0]]
-    metrics = compute_ate(pred_poses, gt_eval)
-    metrics.update(
-        {
-            "num_frames": int(pred_poses.shape[0]),
-            "num_windows": 1,
-            "avg_spike_rate": window_eval["avg_spike_rate"],
-            "avg_active_ratio": window_eval["avg_active_ratio"],
-            "avg_used_sparse": window_eval["avg_used_sparse"],
-            "protocol": "full_trajectory",
-        }
-    )
-    return {
-        "metrics": metrics,
-        "pred_poses": pred_poses,
-        "gt_poses": gt_eval,
-        "window_rows": [],
-    }
-
-
 def evaluate_windowed(
     model: MonoDepthSNN_Spike,
     config: Dict[str, object],
@@ -320,23 +290,18 @@ def main(args):
     gt_all = load_gt_poses(str(pose_path))[: len(image_paths)]
 
     resize_hw = (args.height, args.width)
-    if args.protocol == "full_trajectory":
-        gt_norm = normalize_poses(gt_all)
-        result = evaluate_full_trajectory(model, config, image_paths, gt_norm, device, resize_hw)
-        plot_title = f"VO Trajectory (XZ) seq{args.seq_id} full trajectory"
-    else:
-        result = evaluate_windowed(
-            model,
-            config,
-            image_paths,
-            gt_all,
-            device,
-            resize_hw,
-            args.window_size,
-            args.window_stride,
-            args.max_windows,
-        )
-        plot_title = f"VO Trajectory (XZ) seq{args.seq_id} first window"
+    result = evaluate_windowed(
+        model,
+        config,
+        image_paths,
+        gt_all,
+        device,
+        resize_hw,
+        args.window_size,
+        args.window_stride,
+        args.max_windows,
+    )
+    plot_title = f"VO Trajectory (XZ) seq{args.seq_id} first window"
 
     metrics = dict(result["metrics"])
     metrics["checkpoint"] = ckpt_path
@@ -366,13 +331,12 @@ def main(args):
 
 def parse_args():
     script_dir = Path(__file__).resolve().parent
-    parser = argparse.ArgumentParser(description="Evaluate SNN SfM front-end with full-trajectory or windowed VO/ATE on KITTI poses.")
+    parser = argparse.ArgumentParser(description="Evaluate SNN SfM front-end with windowed VO/ATE on KITTI poses.")
     parser.add_argument("--kitti-root", default="")
     parser.add_argument("--seq-id", default="09")
     parser.add_argument("--ckpt-path", default="")
     parser.add_argument("--experiment-dir", default="")
     parser.add_argument("--output-dir", default=str(script_dir / "outputs" / "vo_eval"))
-    parser.add_argument("--protocol", choices=["windowed", "full_trajectory"], default="windowed")
     parser.add_argument("--max-frames", type=int, default=200)
     parser.add_argument("--window-size", type=int, default=100)
     parser.add_argument("--window-stride", type=int, default=50)
