@@ -10,6 +10,7 @@ The released code is organized into two complementary branches:
 
 - `depth_branch/`: the depth learning pipeline, including ANN depth training and SNN depth fine-tuning.
 - `geometry_branch/`: the geometry front-end pipeline, including self-supervised depth-pose training, VO evaluation, geometry backend evaluation, and latency benchmarking.
+- `geometry_branch/`: the geometry front-end pipeline, including self-supervised depth-pose training, trajectory export, frame-trajectory comparison, geometry backend evaluation, and latency benchmarking.
 
 The central idea is to combine:
 
@@ -106,6 +107,7 @@ See [geometry_branch/README.md](geometry_branch/README.md).
 - `geometry_branch/models.py`: SNN front-end model, temporal encoding, sparse execution logic, and hybrid depth-pose design.
 - `geometry_branch/train_snn_sfm_kitti.py`: main self-supervised geometry training entry.
 - `geometry_branch/eval_snn_vo_ate.py`: VO trajectory and ATE evaluation.
+- `geometry_branch/plot_frame_trajectory_comparison.py`: frame-trajectory comparison figure and short-window local error analysis.
 - `geometry_branch/eval_snn_geometry_backend.py`: backend-oriented geometric consistency evaluation.
 - `geometry_branch/benchmark_snn_frontends.py`: deployment-oriented latency and memory benchmarking.
 

@@ -14,6 +14,7 @@ For clarity, the released geometry front-end uses a lightweight single-scale dep
 - `slam_backend.py`: geometry backend utilities for depth reprojection and fusion.
 - `train_snn_sfm_kitti.py`: main geometry front-end training script.
 - `eval_snn_vo_ate.py`: VO / ATE evaluation.
+- `plot_frame_trajectory_comparison.py`: publication-style frame-trajectory comparison figure and short-window error curve.
 - `eval_snn_geometry_backend.py`: backend geometry evaluation.
 - `benchmark_snn_frontends.py`: latency and inference benchmark.
 - `compare_frontend_vo.py`: comparison helper for multiple front-ends.
@@ -61,6 +62,24 @@ python eval_snn_vo_ate.py \
   --ckpt-path /path/to/best_snn_sfm.pth
 ```
 
+## Plot Frame-Trajectory Comparison
+
+This experiment can be used as a more presentation-friendly alternative to reporting only scalar VO metrics. It compares ANN and SNN trajectories after exporting `pred_traj` / `gt_traj` files from the evaluation scripts.
+
+```bash
+python plot_frame_trajectory_comparison.py \
+  --ann-pred /path/to/ann_pred_traj_seq09.npy \
+  --ann-gt /path/to/ann_gt_traj_seq09.npy \
+  --snn-pred /path/to/snn_pred_traj_seq09.npy \
+  --snn-gt /path/to/snn_gt_traj_seq09.npy \
+  --ann-label Monodepth2 \
+  --snn-label Ours \
+  --seq-label seq09 \
+  --window 30 \
+  --output-path ./outputs/frame_trajectory_compare_seq09.png \
+  --csv-path ./outputs/frame_trajectory_compare_seq09.csv
+```
+
 ## Evaluate Geometry Backend
 
 ```bash
@@ -83,6 +102,7 @@ python run_lif_spike_mainline.py \
 - The geometry branch currently targets front-end geometric perception rather than a complete SLAM system.
 - The framework follows a hybrid depth-pose design instead of a fully spiking joint architecture.
 - The main public release focuses on the core train/eval pipeline; perturbation wrappers for reviewer-specific robustness tables and external hardware power instrumentation are not bundled here.
+- Besides scalar ATE-style metrics, the repository now includes a frame-trajectory comparison figure for qualitative and short-window geometric analysis.
 - Sparse execution, temporal encoding, and pose-consistency regularization are all exposed through command-line options.
 - Time-step settings should be understood as different operating points, not as a single monotonic performance knob.
 - For public release, only the main branch code has been kept here; reviewer-specific scripts and local experiment wrappers are intentionally excluded.
